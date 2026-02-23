@@ -1,0 +1,37 @@
+.App {
+  display: flex;
+  height: 100vh; /* 화면 전체 높이 */
+  background-color: #f8f9fa;
+  flex-direction: row; /* 사이드바와 콘텐츠를 나란히 배치 */
+  zoom: 0.8;
+  -webkit-transform: scale(0.8);
+  -webkit-transform-origin: 0 0;
+}
+
+body {
+  background-color: #f8f9fa !important;
+}
+
+/* 콘텐츠 영역 */
+.content {
+  margin-left: 300px; /* 사이드바 너비만큼 여백 */
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  padding: 20px;
+  background-color: #f8f9fa; /* 콘텐츠 영역 배경색 */
+  height: 100vh;
+}
+
+/* 사이드바 없는 경우 전체 너비로 확장 */
+.full-width {
+  margin-left: 0;
+  padding: 20px;
+  flex-grow: 1;
+  background-color: #f8f9fa;
+}
+
+/* 반응형 설정 */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 200px; /* 작은 화면에서 사이드바 너비 축소에 맞춰 조정 */
+  }
+}
