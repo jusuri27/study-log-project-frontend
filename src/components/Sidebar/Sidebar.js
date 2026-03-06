@@ -18,7 +18,7 @@ function Sidebar() {
             <span>홈</span>
           </li>
 
-          <li onClick={navigation.toTest}>
+          <li onClick={navigation.toAlgorithm}>
             <FaBriefcase className="icon" />
             <span>테스트</span>
           </li>

@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import './components/Sidebar/Sidebar.css';
 import { ToastProvider } from "./context/ToastContext";
 import { useLocation } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const location = useLocation(); 

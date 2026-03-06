@@ -1,11 +1,11 @@
 import axios from '../axios.js';
-import * as api from '../path';
+import * as api from '../path.js';
 
-const SALARY = api.path.SALARY;
+const ALGORITHM = api.path.ALGORITHM;
 
-const getSalaryAPI = (page, size) => {
+const getAlgorithmsAPI = (page, size) => {
     return axios({
-            url: `${SALARY.BASE}?page=${page}&size=${size}`,
+            url: ALGORITHM.BASE,
             method: 'get'
         })
         .then(res => {
@@ -20,13 +20,16 @@ const getSalaryAPI = (page, size) => {
         });
 };
 
-const excelDownloadSalaryAPI = (params) => {
+const createAlgorithmAPI = (params) => {
     return axios({
-            url: SALARY.EXCELDOWNLOAD,
+            url: ALGORITHM.BASE,
             method: 'post',
-            responseType: 'blob'
+            data: params
         })
         .then(res => {
+            if (!res.data) {
+                throw new Error("응답 에러: 데이터가 없습니다.");
+            }
             return { response: res, error: null };
         })
         .catch(err => {
@@ -36,4 +39,4 @@ const excelDownloadSalaryAPI = (params) => {
 };
 
 
-export { getSalaryAPI, excelDownloadSalaryAPI };
+export { getAlgorithmsAPI, createAlgorithmAPI };
