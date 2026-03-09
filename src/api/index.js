@@ -1,5 +1,6 @@
 export {
     getAlgorithmsAPI,
-    createAlgorithmAPI
+    createAlgorithmAPI,
+    updateAlgorithmAPI,
 }
 from './algorithm';

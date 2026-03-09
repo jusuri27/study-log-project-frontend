@@ -13,6 +13,17 @@ const AlgorithmModalPage = (props) => {
         { key: 'lv', value: '', label: '난이도', type: 'input', isDisable: false },
     ]);
 
+    useEffect(() => {
+        if (props.formData) {
+            setFormData(prevFormData =>
+                prevFormData.map(field => {
+                    const updatedField = props.formData.find(item => item.key === field.key);
+                    return updatedField;
+                })
+            );
+        }
+    }, [props.formData]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) =>
@@ -31,7 +42,7 @@ const AlgorithmModalPage = (props) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    알고리즘 추가
+                    알고리즘 {props.modalType === 'update' ? '수정' : '추가'}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -68,7 +79,7 @@ const AlgorithmModalPage = (props) => {
                 <button className='algorithm-secondary-btn' onClick={props.onHide}>
                     닫기
                 </button>
-                <button className='algorithm-primary-btn' onClick={() => props.handleSubmit(formData, modalType)}>
+                <button className='algorithm-primary-btn' onClick={() => props.handleSubmit(formData, props.modalType)}>
                     저장
                 </button>
             </Modal.Footer>

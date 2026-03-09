@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useToast } from '../../context/ToastContext';
-import { getAlgorithmsAPI, createAlgorithmAPI } from '../../api/index.js';
+import { getAlgorithmsAPI, createAlgorithmAPI, updateAlgorithmAPI } from '../../api/index.js';
 import "./AlgorithmPage.css";
 import AlgorithmModalPage from "./AlgorithmModalPage";
 
@@ -23,39 +23,40 @@ const AlgorithmPage = () => {
 
     const getAlgorithms = async () => {
         const { response, error } = await getAlgorithmsAPI();
-        console.log(response);
         if (error) {
             showToast('에러 발생', 'error');
             return;
         }
-        // const formattedData = response.data.data.content.map((item) => ({
-        //     ...item,
-        //     basicSalary: formatNumberWithCommas(item.basicSalary),
-        //     deduction: formatNumberWithCommas(item.deduction),
-        //     netSalary: formatNumberWithCommas(item.netSalary),
-        // }));
-
-
         setAlgorithms(response.data);
     };
 
-    // 추가 버튼 클릭시 실행되는 함수
+    // 추가 버튼 클릭시
     const handleCreate = () => {
         // formData 초기화
         const createFormData = formData.map((field) => ({
             ...field,
-            value: '',
-            options: ['name'].includes(field.key) ? [{ name: "선택", value: "" }] : field.options,
-            isDisable: ['position', 'deptName', 'name'].includes(field.key) ? false :
-                ['netSalary'].includes(field.key) ? true : field.isDisable,
+            value: ''
         }));
+        console.log("formData : ", formData);
 
         setFormData(createFormData);
         setModalType('create');
         setModalShow(true);
     };
+
+    // 수정 버튼 클릭시
+    const handleRowDoubleClick = (algorithm) => {
+        const updatedFormData = formData.map((item) => ({
+            ...item,
+            value: algorithm[item.key] ?? ''
+        }));
+        setFormData(updatedFormData);
+        setModalShow(true);
+        setModalType('update');
+    };
+
     // 추가, 수정 api
-    const handleSubmit = async (data, selectedDate, modalType) => {
+    const handleSubmit = async (data, modalType) => {
         let params = {};
         
         // 알고리즘 정보 데이터 세팅
@@ -64,16 +65,25 @@ const AlgorithmPage = () => {
                 params[item.key] = item.value;
             }
         });
-        console.log("data : ", data);
 
-        const { response, error } = await createAlgorithmAPI(params);
+        if(modalType === 'create') {
+            const { response, error } = await createAlgorithmAPI(params);
             if (error) {
                 showToast('에러 발생', 'error');
                 return;
             }
             showToast(response.data.message, 'success');
-
+        } else if(modalType === 'update') {
+            const { response, error } = await updateAlgorithmAPI(params, params.id);
+            if (error) {
+                showToast('에러 발생', 'error');
+                return;
+            }
+            showToast(response.data.message, 'success');
+        }
+        
         setModalShow(false);
+        getAlgorithms();
     };
 
   return (
@@ -102,6 +112,11 @@ const AlgorithmPage = () => {
                               <td>{algorithm.lv || 'N/A'}</td>
                               <td>{algorithm.name || 'N/A'}</td>
                               <td>{algorithm.tryCount || 'N/A'}</td>
+                              <td>
+                                    <button className='algorithm-table-btn' onClick={() => handleRowDoubleClick(algorithm)}>
+                                        수정
+                                    </button>
+                                </td>
                           </tr>
                       ))}
                   </tbody>
