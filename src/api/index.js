@@ -1,5 +1,6 @@
 export {
-    getSalaryAPI,
-    excelDownloadSalaryAPI
+    getAlgorithmsAPI,
+    createAlgorithmAPI,
+    updateAlgorithmAPI,
 }
-from './salary';
+from './algorithm';

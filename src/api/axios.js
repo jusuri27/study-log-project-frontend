@@ -12,6 +12,18 @@ const instance = axios.create({
     withCredentials: true,
 });
 
+// 공통 request 함수
+export const request = async (config) => {
+    try {
+        const res = await instance(config);
+
+        return { response: res, error: null };
+    } catch (err) {
+        console.error(err);
+        return { response: null, error: err };
+    }
+};
+
 
 
 export default instance;
