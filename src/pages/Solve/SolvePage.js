@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useToast } from '../../context/ToastContext';
-import { getAlgorithmsAPI, createAlgorithmAPI, updateAlgorithmAPI } from '../../api/index.js';
-import "./AlgorithmPage.css";
-import AlgorithmModalPage from "./AlgorithmModalPage";
+import { getSolvesAPI, createSolveAPI, updateSolveAPI } from '../../api/index.js';
+import "./SolvePage.css";
+import SolveModalPage from "./SolveModalPage";
 
-const AlgorithmPage = () => {
-    const [algorithms, setAlgorithms] = useState([]);
+const SolvePage = () => {
+    const [solves, setSolves] = useState([]);
     const { showToast } = useToast();
     const [modalShow, setModalShow] = useState(false); // 모달 사용 여부
     const [modalType, setModalType] = useState(''); // 모달 화면 타입(추가: create, 수정: update)
@@ -18,16 +18,16 @@ const AlgorithmPage = () => {
     ]);
 
     useEffect(() => {
-    getAlgorithms()
+    getSolves()
     }, []);
 
-    const getAlgorithms = async () => {
-        const { response, error } = await getAlgorithmsAPI();
+    const getSolves = async () => {
+        const { response, error } = await getSolvesAPI();
         if (error) {
             showToast('에러 발생', 'error');
             return;
         }
-        setAlgorithms(response.data);
+        setSolves(response.data);
     };
 
     // 추가 버튼 클릭시
@@ -45,10 +45,10 @@ const AlgorithmPage = () => {
     };
 
     // 수정 버튼 클릭시
-    const handleRowDoubleClick = (algorithm) => {
+    const handleRowDoubleClick = (solve) => {
         const updatedFormData = formData.map((item) => ({
             ...item,
-            value: algorithm[item.key] ?? ''
+            value: solve[item.key] ?? ''
         }));
         setFormData(updatedFormData);
         setModalShow(true);
@@ -67,14 +67,14 @@ const AlgorithmPage = () => {
         });
 
         if(modalType === 'create') {
-            const { response, error } = await createAlgorithmAPI(params);
+            const { response, error } = await createSolveAPI(params);
             if (error) {
                 showToast('에러 발생', 'error');
                 return;
             }
             showToast(response.data.message, 'success');
         } else if(modalType === 'update') {
-            const { response, error } = await updateAlgorithmAPI(params, params.id);
+            const { response, error } = await updateSolveAPI(params, params.id);
             if (error) {
                 showToast('에러 발생', 'error');
                 return;
@@ -83,21 +83,21 @@ const AlgorithmPage = () => {
         }
         
         setModalShow(false);
-        getAlgorithms();
+        getSolves();
     };
 
   return (
-    <div className="algorithm-container">
-          <h2 className="algorithm-container-h2">알고리즘 목록</h2>
+    <div className="solve-container">
+          <h2 className="solve-container-h2">알고리즘 목록</h2>
           <div className="mb-3" style={{ textAlign: "right" }}>
-                <button className="me-2 algorithm-primary-btn" onClick={handleCreate}>
+                <button className="me-2 solve-primary-btn" onClick={handleCreate}>
                     추가
                 </button>
-              {/* <button className="algorithm-primary-btn" onClick={handleExcelDownload}>
+              {/* <button className="solve-primary-btn" onClick={handleExcelDownload}>
                   엑셀 다운로드
               </button> */}
           </div>
-          <div className="algorithm-table-responsive">
+          <div className="solve-table-responsive">
               <Table className="">
                   <thead>
                   <tr>
@@ -107,13 +107,13 @@ const AlgorithmPage = () => {
                   </tr>
                   </thead>
                   <tbody>
-                      {algorithms.map(algorithm => (
-                          <tr key={algorithm.id}>
-                              <td>{algorithm.lv || 'N/A'}</td>
-                              <td>{algorithm.name || 'N/A'}</td>
-                              <td>{algorithm.tryCount || 'N/A'}</td>
+                      {solves.map(solve => (
+                          <tr key={solve.id}>
+                              <td>{solve.lv || 'N/A'}</td>
+                              <td>{solve.name || 'N/A'}</td>
+                              <td>{solve.tryCount || 'N/A'}</td>
                               <td>
-                                    <button className='algorithm-table-btn' onClick={() => handleRowDoubleClick(algorithm)}>
+                                    <button className='solve-table-btn' onClick={() => handleRowDoubleClick(solve)}>
                                         수정
                                     </button>
                                 </td>
@@ -122,7 +122,7 @@ const AlgorithmPage = () => {
                   </tbody>
               </Table>
           </div>
-          <AlgorithmModalPage
+          <SolveModalPage
               show={modalShow}
               onHide={() => setModalShow(false)}
               handleSubmit={handleSubmit}
@@ -133,4 +133,4 @@ const AlgorithmPage = () => {
   );
 };
 
-export default AlgorithmPage;
+export default SolvePage;

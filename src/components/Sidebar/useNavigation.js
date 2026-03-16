@@ -6,6 +6,6 @@ export const useNavigation = () => {
 
   return {
     toHome: () => navigate(PATHS.HOME),
-    toAlgorithm: () => navigate(PATHS.ALGORITHM)
+    toSolve: () => navigate(PATHS.SOLVE)
   };
 };

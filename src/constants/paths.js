@@ -1,5 +1,5 @@
 export const PATHS = {
   HOME: '/home',
-  ALGORITHM: '/algorithm'
+  SOLVE: '/solve'
 };
 
