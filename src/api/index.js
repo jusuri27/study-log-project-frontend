@@ -1,6 +1,6 @@
 export {
-    getAlgorithmsAPI,
-    createAlgorithmAPI,
-    updateAlgorithmAPI,
+    getSolvesAPI,
+    createSolveAPI,
+    updateSolveAPI,
 }
-from './algorithm';
+from './solve';

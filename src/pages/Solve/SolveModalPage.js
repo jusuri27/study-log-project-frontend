@@ -5,12 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useToast } from '../../context/ToastContext';
 
-const AlgorithmModalPage = (props) => {
+const SolveModalPage = (props) => {
     const [modalType, setModalType] = useState('');
     const [formData, setFormData] = useState([
-        { key: 'id', value: '', label: '알고리즘Id', type: 'custom', isDisable: false },
-        { key: 'name', value: '', label: '문제명', type: 'input', isDisable: false },
-        { key: 'lv', value: '', label: '난이도', type: 'input', isDisable: false },
+        { key: 'id', value: '', label: '푼 문제ID', type: 'custom', isDisable: false },
+        { key: 'title', value: '', label: '문제 이름', type: 'input', isDisable: false },
+        { key: 'level', value: '', label: '난이도', type: 'input', isDisable: false },
+        { key: 'solvedCount', value: '', label: '푼 횟수', type: 'input', isDisable: false },
+        { key: 'tag', value: '', label: '문제 유형', type: 'input', isDisable: false },
+        { key: 'description', value: '', label: '설명', type: 'input', isDisable: false },
     ]);
 
     useEffect(() => {
@@ -76,10 +79,10 @@ const AlgorithmModalPage = (props) => {
                 ))}
             </Modal.Body>
             <Modal.Footer>
-                <button className='algorithm-secondary-btn' onClick={props.onHide}>
+                <button className='solve-secondary-btn' onClick={props.onHide}>
                     닫기
                 </button>
-                <button className='algorithm-primary-btn' onClick={() => props.handleSubmit(formData, props.modalType)}>
+                <button className='solve-primary-btn' onClick={() => props.handleSubmit(formData, props.modalType)}>
                     저장
                 </button>
             </Modal.Footer>
@@ -88,4 +91,4 @@ const AlgorithmModalPage = (props) => {
 }
 
 
-export default AlgorithmModalPage;
+export default SolveModalPage;
