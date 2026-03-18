@@ -8,9 +8,12 @@ import { useToast } from '../../context/ToastContext';
 const SolveModalPage = (props) => {
     const [modalType, setModalType] = useState('');
     const [formData, setFormData] = useState([
-        { key: 'id', value: '', label: '알고리즘Id', type: 'custom', isDisable: false },
-        { key: 'name', value: '', label: '문제명', type: 'input', isDisable: false },
-        { key: 'lv', value: '', label: '난이도', type: 'input', isDisable: false },
+        { key: 'id', value: '', label: '푼 문제ID', type: 'custom', isDisable: false },
+        { key: 'title', value: '', label: '문제 이름', type: 'input', isDisable: false },
+        { key: 'level', value: '', label: '난이도', type: 'input', isDisable: false },
+        { key: 'solvedCount', value: '', label: '푼 횟수', type: 'input', isDisable: false },
+        { key: 'tag', value: '', label: '문제 유형', type: 'input', isDisable: false },
+        { key: 'description', value: '', label: '설명', type: 'input', isDisable: false },
     ]);
 
     useEffect(() => {

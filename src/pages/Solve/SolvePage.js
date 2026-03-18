@@ -12,13 +12,16 @@ const SolvePage = () => {
     const [modalType, setModalType] = useState(''); // 모달 화면 타입(추가: create, 수정: update)
 
     const [formData, setFormData] = useState([
-        { key: 'id', value: '', label: '알고리즘Id', type: 'custom', isDisable: false },
-        { key: 'lv', value: '', label: '난이도', type: 'input', isDisable: false },
-        { key: 'name', value: '', label: '문제명', type: 'input', isDisable: false }
+        { key: 'id', value: '', label: '푼 문제ID', type: 'custom', isDisable: false },
+        { key: 'title', value: '', label: '문제 이름', type: 'input', isDisable: false },
+        { key: 'level', value: '', label: '난이도', type: 'input', isDisable: false },
+        { key: 'solvedCount', value: '', label: '푼 횟수', type: 'input', isDisable: false },
+        { key: 'tag', value: '', label: '문제 유형', type: 'input', isDisable: false },
+        { key: 'description', value: '', label: '설명', type: 'input', isDisable: false },
     ]);
 
     useEffect(() => {
-    getSolves()
+        getSolves()
     }, []);
 
     const getSolves = async () => {
@@ -86,9 +89,30 @@ const SolvePage = () => {
         getSolves();
     };
 
+    const getTierInfo = (level) => {
+        const tiers = [
+            { name: 'Bronze', color: '#cd7f32' },
+            { name: 'Silver', color: '#c0c0c0' },
+            { name: 'Gold', color: '#ffd700' },
+            { name: 'Platinum', color: '#27e2a4' },
+            { name: 'Diamond', color: '#00b4fc' },
+            { name: 'Ruby', color: '#ff0062' },
+        ];
+
+        const tierIndex = Math.floor((level - 1) / 5); // 5단계씩
+        const tierLevel = 5 - ((level - 1) % 5); // V ~ I
+
+        const roman = ['I', 'II', 'III', 'IV', 'V'];
+
+        return {
+            name: `${tiers[tierIndex]?.name || 'Unknown'} ${roman[tierLevel - 1]}`,
+            color: tiers[tierIndex]?.color || '#999'
+        };
+    };
+
   return (
     <div className="solve-container">
-          <h2 className="solve-container-h2">알고리즘 목록</h2>
+          <h2 className="solve-container-h2">해결한 문제</h2>
           <div className="mb-3" style={{ textAlign: "right" }}>
                 <button className="me-2 solve-primary-btn" onClick={handleCreate}>
                     추가
@@ -101,17 +125,47 @@ const SolvePage = () => {
               <Table className="">
                   <thead>
                   <tr>
+                      <th>문제 이름</th>
                       <th>난이도</th>
-                      <th>문제명</th>
                       <th>푼 횟수</th>
+                      <th>문제 유형</th>
+                      <th>설명</th>
+                      <th>첫 풀이</th>
+                      <th>마지막 풀이</th>
+                      <th>관리</th>
                   </tr>
                   </thead>
                   <tbody>
                       {solves.map(solve => (
                           <tr key={solve.id}>
-                              <td>{solve.lv || 'N/A'}</td>
-                              <td>{solve.name || 'N/A'}</td>
-                              <td>{solve.tryCount || 'N/A'}</td>
+                              <td>{solve.title || 'N/A'}</td>
+                              <td>
+                                {(() => {
+                                    const tier = getTierInfo(solve.level);
+                                    return (
+                                        <span
+                                            style={{
+                                                backgroundColor: tier.color,
+                                                color: 'white',
+                                                padding: '4px 10px',
+                                                borderRadius: '12px',
+                                                fontSize: '12px',
+                                                fontWeight: 'bold',
+                                                display: 'inline-block',
+                                                minWidth: '80px',
+                                                textAlign: 'center'
+                                            }}
+                                        >
+                                            {tier.name}
+                                        </span>
+                                    );
+                                })()}
+                            </td>
+                              <td>{solve.solvedCount || 'N/A'}</td>
+                              <td>{solve.tag || 'N/A'}</td>
+                              <td>{solve.description || 'N/A'}</td>
+                              <td>{solve.createdAt?.substring(0, 10)}</td>
+                              <td>{solve.updatedAt?.substring(0, 10)}</td>
                               <td>
                                     <button className='solve-table-btn' onClick={() => handleRowDoubleClick(solve)}>
                                         수정
